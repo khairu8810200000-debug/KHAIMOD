@@ -1,1 +1,0 @@
-# KHAIMOD\n\nProjek asas aplikasi Android menggunakan Kotlin. Bina APK melalui Android Studio atau GitHub Actions (tab Actions). Hasil build debug dimuat naik sebagai artifact KHAIMOD-debug-apk.\n\nNota: Ini rangka projek awal. Fungsi khusus dan AdMob belum diintegrasikan sehingga spesifikasi aplikasi contoh disahkan.\n

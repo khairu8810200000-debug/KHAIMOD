@@ -1,6 +1,6 @@
 package com.khaimod.app
-
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -8,44 +8,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(28, 48, 28, 24)
-            setBackgroundColor(0xFF111827.toInt())
-        }
-        val title = TextView(this).apply {
-            text = "KHAIMOD"
-            textSize = 32f
-            setTextColor(0xFFFFFFFF.toInt())
-            setPadding(0, 12, 0, 8)
-        }
-        val subtitle = TextView(this).apply {
-            text = "Selamat datang"
-            textSize = 16f
-            setTextColor(0xFFD1D5DB.toInt())
-            setPadding(0, 0, 0, 28)
-        }
-        root.addView(title)
-        root.addView(subtitle)
-        listOf("MULA", "TETAPAN", "TENTANG").forEach { label ->
-            val button = Button(this).apply {
-                text = label
-                isAllCaps = false
-                setOnClickListener {
-                    Toast.makeText(this@MainActivity, "$label — fungsi sedang disediakan", Toast.LENGTH_SHORT).show()
-                }
-            }
-            root.addView(button, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 12 })
-        }
-        val footer = TextView(this).apply {
-            text = "KHAIMOD • Versi 1.0"
-            textSize = 12f
-            setTextColor(0xFF9CA3AF.toInt())
-            setPadding(0, 24, 0, 0)
-        }
-        root.addView(footer)
-        setContentView(root)
+    private val dark = 0xFF111827.toInt()
+    private val white = 0xFFFFFFFF.toInt()
+    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState); showHome() }
+    private fun layout() = LinearLayout(this).apply {
+        orientation=LinearLayout.VERTICAL; gravity=Gravity.CENTER_HORIZONTAL
+        setPadding(28,42,28,24); setBackgroundColor(dark)
+    }
+    private fun label(root: LinearLayout, value: String, size: Float) {
+        root.addView(TextView(this).apply {
+            text=value; textSize=size; gravity=Gravity.CENTER; setTextColor(white); setPadding(0,12,0,16)
+        }, LinearLayout.LayoutParams(-1,-2))
+    }
+    private fun action(root: LinearLayout, value: String, task: () -> Unit) {
+        root.addView(Button(this).apply { text=value; isAllCaps=false; setOnClickListener { task() } },
+            LinearLayout.LayoutParams(-1,-2).apply { bottomMargin=12 })
+    }
+    private fun showHome() {
+        val root=layout(); label(root,"KHAIMOD",34f); label(root,"Selamat datang",17f)
+        action(root,"MULA") { Toast.makeText(this,"KHAIMOD sedia digunakan",Toast.LENGTH_SHORT).show() }
+        action(root,"TETAPAN") { val v=layout(); label(v,"TETAPAN",26f); action(v,"KEMBALI"){showHome()}; setContentView(v) }
+        action(root,"TENTANG") { val v=layout(); label(v,"TENTANG KHAIMOD",24f); label(v,"Aplikasi Android versi 1.0",16f); action(v,"KEMBALI"){showHome()}; setContentView(v) }
+        label(root,"KHAIMOD • v1.0",12f); setContentView(root)
     }
 }
